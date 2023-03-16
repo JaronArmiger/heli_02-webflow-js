@@ -27,46 +27,17 @@ function updateCurrentClass() {
   })
 }
 
-const wallpaper = $('.wallpaper-container')
-
 barba.init({
   transitions: [
     {
       preventRunning: true,
-      leave() {
-        const tl = gsap.timeline()
-
-        tl.to(wallpaper, { opacity: 100 })
-        tl.fromTo(
-          $('.wallpaper-container'),
-          {
-            clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
-          },
-          {
-            clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
-            // onComplete: () => {
-            //   $(window).scrollTop(0)
-            //   $(data.next.container).removeClass('fixed')
-            // },
-          }
-        )
-        return tl
-      },
       enter(data) {
         $('.wallpaper-container').removeClass('hide')
         updateCurrentClass()
-
-        const tl = gsap.timeline({
-          defaults: {
-            duration: 1.4,
-            ease: 'power2.inOut',
-          },
+        gsap.defaults({
+          duration: 1.4,
+          ease: 'power2.inOut',
         })
-
-        // gsap.defaults({
-        //   duration: 1.4,
-        //   ease: 'power2.inOut',
-        // })
         // if ($('.menu_link.w--current').length > 0) {
         //   gsap.fromTo('.is-home', { x: '0%' }, { x: '49% ' })
         //   gsap.fromTo('.is-about', { x: '-49%' }, { x: '0% ' })
@@ -89,15 +60,19 @@ barba.init({
         //     },
         //   }
         // )
-
-        tl.to($('.wallpaper-container'), {
-          clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
-          onComplete: () => {
-            $(window).scrollTop(0)
-            $(data.next.container).removeClass('fixed')
+        gsap.fromTo(
+          $('.wallpaper-container'),
+          {
+            clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
           },
-        })
-
+          {
+            clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
+            onComplete: () => {
+              $(window).scrollTop(0)
+              $(data.next.container).removeClass('fixed')
+            },
+          }
+        )
         // return gsap.fromTo(
         //   $('.wallpaper-container'),
         //   {
@@ -111,8 +86,13 @@ barba.init({
         //     },
         //   }
         // )
-
-        return tl
+        return gsap.to($('.wallpaper-container'), {
+          clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
+          onComplete: () => {
+            $(window).scrollTop(0)
+            $(data.next.container).removeClass('fixed')
+          },
+        })
       },
     },
   ],
