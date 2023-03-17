@@ -4,6 +4,10 @@ import $ from 'jquery'
 
 console.log('ostentation')
 
+const randInt = (max) => {
+  return Math.floor(Math.random() * max)
+}
+
 let percentTop = 0
 let percentLeft = 0
 
@@ -15,9 +19,6 @@ $(document).on('click', function (e) {
   percentLeft = (mouseLeft / $(window).width()) * 100
 })
 
-console.log(percentLeft)
-console.log(percentTop)
-
 function updateCurrentClass() {
   $('.w--current').removeClass('w--current')
   $('.nav a').each(function () {
@@ -27,15 +28,33 @@ function updateCurrentClass() {
   })
 }
 
+const showImageByIndex = (imgIndex) => {
+  wallpaperImages.each(function () {
+    if ($(this).attr('data-img-index') === imgIndex.toString()) {
+      currentImg = $(this)
+    }
+  })
+}
+
 const wallpaper = $('.wallpaper-container')
+const wallpaperImages = $('.wallpaper_img')
+let currentImg
+wallpaperImages.hide()
 
 barba.init({
   transitions: [
     {
       preventRunning: true,
-      leave() {
+      leave(data) {
+        const imgIndex = randInt(5)
+        // move this to run on page load
+        showImageByIndex(imgIndex)
+        currentImg.show()
+
+        $(data.current.container).addClass('fixed')
         const tl = gsap.timeline()
 
+        tl.to(currentImg, { opacity: 100 })
         tl.to(wallpaper, { opacity: 100 })
         tl.fromTo(
           $('.wallpaper-container'),
@@ -44,16 +63,11 @@ barba.init({
           },
           {
             clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
-            // onComplete: () => {
-            //   $(window).scrollTop(0)
-            //   $(data.next.container).removeClass('fixed')
-            // },
           }
         )
         return tl
       },
       enter(data) {
-        $('.wallpaper-container').removeClass('hide')
         updateCurrentClass()
 
         const tl = gsap.timeline({
@@ -63,55 +77,18 @@ barba.init({
           },
         })
 
-        // gsap.defaults({
-        //   duration: 1.4,
-        //   ease: 'power2.inOut',
-        // })
-        // if ($('.menu_link.w--current').length > 0) {
-        //   gsap.fromTo('.is-home', { x: '0%' }, { x: '49% ' })
-        //   gsap.fromTo('.is-about', { x: '-49%' }, { x: '0% ' })
-        // } else {
-        //   gsap.fromTo('.is-home', { x: '49%' }, { x: '0% ' })
-        //   gsap.fromTo('.is-about', { x: '0%' }, { x: '-49% ' })
-        // }
-
         $(data.next.container).addClass('fixed')
-        // return gsap.fromTo(
-        //   data.next.container,
-        //   {
-        //     clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
-        //   },
-        //   {
-        //     clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
-        //     onComplete: () => {
-        //       $(window).scrollTop(0)
-        //       $(data.next.container).removeClass('fixed')
-        //     },
-        //   }
-        // )
 
         tl.to($('.wallpaper-container'), {
           clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
           onComplete: () => {
             $(window).scrollTop(0)
             $(data.next.container).removeClass('fixed')
+            currentImg.hide()
           },
         })
-
-        // return gsap.fromTo(
-        //   $('.wallpaper-container'),
-        //   {
-        //     clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
-        //   },
-        //   {
-        //     clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
-        //     onComplete: () => {
-        //       $(window).scrollTop(0)
-        //       $(data.next.container).removeClass('fixed')
-        //     },
-        //   }
-        // )
-
+        // tl.to(wallpaper, { opacity: 0 })
+        // tl.to(wallpaperImg, { opacity: 0 })
         return tl
       },
     },
