@@ -9,7 +9,8 @@ const activateDropdown = () => {
   const frameBottomRight = $('.frame-bottom-right')
   const frameTopLeft = $('.frame-top-left')
   const frameTopRight = $('.frame-top-right')
-  const menuIcon = $('.menu_icon_link')
+  const openIcon = $('.menu_icon_link.open')
+  const closeIcon = $('.menu_icon_link.close')
   const dropdownContainer = $('.dropdown-container')
   const navLinks = $('.nav_link')
   console.log(navLinks)
@@ -75,8 +76,22 @@ const activateDropdown = () => {
     },
     0.6
   )
+  tl.to(
+    openIcon,
+    {
+      opacity: 0,
+    },
+    0
+  )
+  tl.to(
+    closeIcon,
+    {
+      opacity: 1,
+    },
+    0
+  )
 
-  menuIcon.on('click', function () {
+  openIcon.on('click', function () {
     if (dropdownOpen) {
       tl.reverse()
       dropdownOpen = false
@@ -85,6 +100,11 @@ const activateDropdown = () => {
       dropdownOpen = true
     }
     console.log(`dropdownOpen: ${dropdownOpen}`)
+  })
+
+  navLinks.on('click', function () {
+    tl.reverse()
+    dropdownOpen = false
   })
 }
 
