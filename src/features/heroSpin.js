@@ -16,11 +16,13 @@ const switchItem = () => {
     '.hero-img-container',
     {
       rotationY: 0,
+      rotationX: 0,
     },
     {
       rotationY: 90,
+      rotationX: 15,
       ease: 'power2.in',
-      duration: 0.4,
+      duration: 0.8,
     }
   )
     .set(prevItem, { opacity: 0 })
@@ -29,11 +31,13 @@ const switchItem = () => {
       '.hero-img-container',
       {
         rotationY: -90,
+        rotationX: 15,
       },
       {
         rotationY: 0,
+        rotationX: 0,
         ease: 'power2.out',
-        duration: 0.6,
+        duration: 1.2,
       }
     )
 }
@@ -48,7 +52,7 @@ const activateHeroSpin = () => {
   switchItem()
   setInterval(function () {
     switchItem()
-  }, 1000)
+  }, 4000)
   console.log('hero spin')
 }
 
