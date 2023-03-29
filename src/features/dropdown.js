@@ -93,17 +93,17 @@ const activateDropdown = () => {
 
   openIcon.on('click', function () {
     if (dropdownOpen) {
-      tl.reverse()
+      tl.timeScale(2).reverse()
       dropdownOpen = false
     } else {
-      tl.restart()
+      tl.timeScale(1).restart()
       dropdownOpen = true
     }
     console.log(`dropdownOpen: ${dropdownOpen}`)
   })
 
   navLinks.on('click', function () {
-    tl.reverse()
+    tl.timeScale(2).reverse()
     dropdownOpen = false
   })
 }

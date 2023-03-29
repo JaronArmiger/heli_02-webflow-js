@@ -2,29 +2,21 @@ import barba from '@barba/core'
 import gsap from 'gsap'
 import $ from 'jquery'
 
-console.log('wallpaper.js')
-
 // helper functions
 
-const randInt = (max) => {
-  return Math.floor(Math.random() * max)
-}
-
-function updateCurrentClass() {
-  $('.w--current').removeClass('w--current')
-  $('.nav a').each(function () {
-    if ($(this).attr('href') === window.location.pathname) {
-      $(this).addClass('w--current')
-    }
-  })
-}
-
-const showImageByIndex = (wallpaperImages, imgIndex) => {
-  wallpaperImages.each(function () {
-    if ($(this).attr('data-img-index') === imgIndex.toString()) {
-      currentImg = $(this)
-    }
-  })
+const getImgIndexFromPath = (path) => {
+  switch (path) {
+    case '/':
+      return 0
+    case '/about':
+      return 1
+    case '/work':
+      return 2
+    case '/contact':
+      return 3
+    default:
+      return 4
+  }
 }
 
 let percentTop = 0
@@ -51,29 +43,35 @@ const createWallpaperAnim = () => {
       {
         preventRunning: true,
         leave(data) {
-          const imgIndex = randInt(5)
+          let targetPath = data?.next?.url?.path
           // move this to run on page load
-          showImageByIndex(wallpaperImages, imgIndex)
+          let imgIndex = getImgIndexFromPath(targetPath)
+          currentImg = wallpaperImages.eq(imgIndex)
+          console.log(currentImg)
           currentImg.show()
 
           $(data.current.container).addClass('fixed')
           const tl = gsap.timeline()
 
-          tl.to(currentImg, { opacity: 100 })
-          tl.to(wallpaper, { opacity: 100 })
-          tl.fromTo(
-            $('.wallpaper-container'),
-            {
-              clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
-            },
-            {
-              clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
-            }
-          )
+          tl.set(currentImg, { opacity: 100 })
+            .set(wallpaper, { opacity: 100 })
+            .fromTo(
+              $('.wallpaper-container'),
+              {
+                clipPath: `circle(0% at ${percentLeft}% ${percentTop}%)`,
+              },
+              {
+                clipPath: `circle(140% at ${percentLeft}% ${percentTop}%)`,
+              }
+            )
+
+          // setTimeout(function () {
+          //   console.log('timeout')
+          // }, 500)
           return tl
         },
         enter(data) {
-          updateCurrentClass()
+          // updateCurrentClass()
 
           const tl = gsap.timeline({
             defaults: {
