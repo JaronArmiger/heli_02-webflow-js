@@ -15,7 +15,13 @@ const textRollTriple = (innerClassname, outerClassname) => {
   })
   console.log(splitType)
 
-  $(outerClassname).each(function () {
+  const outerElement = $(outerClassname)
+
+  if (outerElement.length == 0) {
+    return
+  }
+
+  outerElement.each(function () {
     let firstChars = $(this).find(`${innerClassname}.is-1 .char`)
     let secondChars = $(this).find(`${innerClassname}.is-2 .char`)
     let thirdChars = $(this).find(`${innerClassname}.is-3 .char`)
@@ -91,7 +97,13 @@ const textRollDouble = (innerClassname, outerClassname) => {
   })
   console.log(splitType)
 
-  $(outerClassname).each(function () {
+  const outerElement = $(outerClassname)
+
+  if (outerElement.length == 0) {
+    return
+  }
+
+  outerElement.each(function () {
     let firstChars = $(this).find(`${innerClassname}.is-1 .char`)
     let secondChars = $(this).find(`${innerClassname}.is-2 .char`)
 

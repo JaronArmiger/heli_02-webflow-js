@@ -3,6 +3,10 @@ import $ from 'jquery'
 
 const switchItem = () => {
   let prevItem = $('.hero-img-wrap.active')
+
+  if (prevItem.length == 0) {
+    return
+  }
   prevItem.removeClass('active')
   let nextItem = prevItem.next()
   if (prevItem.next().length == 0) {
