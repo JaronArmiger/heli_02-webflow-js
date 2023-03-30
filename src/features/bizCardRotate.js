@@ -4,8 +4,8 @@ import $ from 'jquery'
 // let windowWidth = $(window).width()
 // let windowHeight = $(window).height()
 
-const maxXRotation = 15
-const maxYRotation = 15
+const maxXRotation = 10
+const maxYRotation = 10
 
 const activateBizCardRotate = (targetClassname) => {
   const targetElement = $(targetClassname)
@@ -25,7 +25,7 @@ const activateBizCardRotate = (targetClassname) => {
   //     rotationY: 0 - yFraction * maxYRotation,
   //   })
   // })
-  const rotateDuration = 1.7
+  const rotateDuration = 2
   let tl = gsap.timeline({ repeat: -1 })
 
   tl.to(targetElement, {
