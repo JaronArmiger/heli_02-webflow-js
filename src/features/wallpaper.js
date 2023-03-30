@@ -2,6 +2,10 @@ import barba from '@barba/core'
 import gsap from 'gsap'
 import $ from 'jquery'
 
+import activateDropdown from './dropdown'
+import activateHeroSpin from './heroSpin'
+import { textRollTriple, textRollDouble } from './textRoll'
+
 // helper functions
 
 const getImgIndexFromPath = (path) => {
@@ -90,6 +94,11 @@ const createWallpaperAnim = () => {
               currentImg.hide()
             },
           })
+
+          activateDropdown()
+          activateHeroSpin()
+          textRollTriple('.roll-text', '.roll-container')
+          textRollDouble('.contact-info-text', '.contact-info-text-wrap')
           return tl
         },
       },
