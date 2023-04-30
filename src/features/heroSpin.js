@@ -14,7 +14,7 @@ const switchItem = () => {
   }
   nextItem.addClass('active')
 
-  let tl = gsap.timeline()
+  let tl = gsap.timeline({ paused: true })
 
   tl.fromTo(
     '.hero-img-container',
@@ -44,6 +44,7 @@ const switchItem = () => {
         duration: 1.2,
       }
     )
+    .restart()
 }
 console.log(switchItem)
 
